@@ -1,0 +1,25 @@
+module four_2_to_1_mux_tb(
+
+    );
+    reg [3:0]a,b;
+    reg sel;
+    wire [3:0]y;
+    fourbit_2_to_1_mux inst(.a(a), .b(b), .sel(sel), .y(y));
+    initial begin
+    a=4'b1010; b=4'b0101; sel=0; #10;
+    a=4'b1010; b=4'b0101; sel=1; #20;
+    a=4'b0010; b=4'b0001; sel=0; #30;
+    a=4'b0010; b=4'b0001; sel=1; #35;
+    a=4'b1110; b=4'b0111; sel=0; #45;
+    a=4'b1110; b=4'b0111; sel=1; #50;
+    a=4'b1001; b=4'b0110; sel=0; #55;
+    a=4'b1001; b=4'b0110; sel=1; #60;
+    a=4'b1011; b=4'b1101; sel=0; #65;
+    a=4'b1011; b=4'b1101; sel=1; #80;
+    a=4'b1000; b=4'b0100; sel=0; #85;
+    a=4'b1000; b=4'b0100; sel=1; #90;
+    a=4'b0100; b=4'b0010; sel=0; #95;
+    a=4'b0100; b=4'b0010; sel=1; #100;
+    end
+endmodule
+/* Can assign the values in hexa-decimal or decimal for reducing the effort in assigning. ex- 4'hA = 4'b1010, 4'd1 = 4'b0001 */ 
