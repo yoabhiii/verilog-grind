@@ -1,0 +1,22 @@
+module TB();
+    reg [2:0]i;
+    reg en;
+    wire [7:0]y;
+    
+    three_to_8_decoder tb(.i(i),.en(en),.y(y));
+    initial begin 
+    en =1'b0; i=3'b000;
+    #10;
+    en= 1'b1;
+    repeat(8) begin
+    #10;
+    i=i+3'b001;
+    end
+    #10 en=1'b0;
+    #10 $finish;
+    end
+    
+     initial begin
+        $monitor("Time=%0t | EN=%b | In=%b | Out=%b", $time, en, i, y);
+    end
+endmodule
