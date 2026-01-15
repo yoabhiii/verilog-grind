@@ -1,0 +1,30 @@
+module three_to_8_decoder(
+    input [2:0]i,
+    input en,
+    output [7:0]y
+    );
+    wire en_low, en_high;
+   assign en_low = (~i[2]) & en;
+   assign en_high = i[2] & en;
+   
+    two_to1_inst inst( .a0(i[0]), .a1(i[1]), .en(en_low), .y(y[3:0]));
+    two_to1_inst iinst2 ( .a0(i[0]), .a1(i[1]), .en(en_high), .y(y[7:4]));
+endmodule
+
+// two to 4 decoder for lower order-
+module two_to1_inst( input a0, a1, en,
+output reg [3:0]y
+    );
+    always@(*) begin
+    if(en==1'b0)
+    y=4'b0000;
+    else
+    case({a1,a0}) //Active  HIGH enable
+    2'b00 : y = 4'b0001;
+    2'b01 : y = 4'b0010;
+    2'b10 : y = 4'b0100;
+    2'b11 : y = 4'b1000;
+    default : begin y=4'b0000; end
+    endcase
+    end
+endmodule
