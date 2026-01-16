@@ -1,0 +1,30 @@
+module higher( input[3:0] a, 
+input en,
+output [15:0] y
+);
+wire [3:0]y_c; // for passing enable signal
+lower inst_control (.a(a[3:2]),.en(en), .y(y_c)); //control module, for selecting which one of the four module should receive enable signal.
+lower inst_M1 (.a(a[1:0]),.en(y_c[0]), .y(y[3:0])); // 1st decoder with o/ps as d0,d1,d2,d3.
+lower inst_M2 (.a(a[1:0]),.en(y_c[1]), .y(y[7:4])); // 2nd decoder
+lower inst_M3 (.a(a[1:0]),.en(y_c[2]), .y(y[11:8])); // 3rd decoder
+lower inst_M4 (.a(a[1:0]),.en(y_c[3]), .y(y[15:12])); // 4th decoder
+endmodule
+
+//lower order module-
+module lower( input[1:0]a, 
+input en,
+output reg [3:0] y);
+always @(*) begin
+if(en == 1'b1)
+case(a)
+2'b00 : y=4'b0001;
+2'b01 : y=4'b0010;
+2'b10 : y=4'b0100;
+2'b11 : y=4'b1000;
+default : y=4'b0000;
+endcase
+else
+y=4'b0000;
+end 
+endmodule
+
