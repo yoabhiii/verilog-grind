@@ -1,0 +1,20 @@
+module TB();
+reg[3:0] a;
+reg en;
+wire [15:0] y;
+
+higher inst(.a(a), .en(en), .y(y));
+initial begin
+en=1'b0; a=4'b0000; #5;
+en=1'b1;
+repeat(16) begin
+#5;
+a=a+1;
+end
+#5 en=1'b0;
+#5 $finish;
+end
+initial begin
+$monitor("Time = %0t | En = %b | a = %b | y = %b", $time, en, a, y);
+end
+endmodule
