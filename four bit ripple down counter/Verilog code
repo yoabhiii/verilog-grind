@@ -1,0 +1,22 @@
+module down_counter(
+    input clk,
+    input reset,
+    output [3:0] q,
+    output [3:0] q_t
+    );
+    toggle inst1(.clk_d(clk), .reset_d(reset), .q_d(q[0]), .qt_d(q_t[0]));
+    toggle inst2(.clk_d(q_t[0]), .reset_d(reset), .q_d(q[1]), .qt_d(q_t[1]));
+    toggle inst3(.clk_d(q_t[1]), .reset_d(reset), .q_d(q[2]), .qt_d(q_t[2]));
+    toggle inst4(.clk_d(q_t[2]), .reset_d(reset), .q_d(q[3]), .qt_d(q_t[3]));
+    
+endmodule
+
+module toggle(input clk_d, input reset_d, output reg q_d, output qt_d);
+    assign qt_d = ~q_d; 
+    always@(posedge reset_d or negedge clk_d) begin
+    if(reset_d)
+    q_d <= 1'b1;// Q
+    else 
+    q_d <= ~q_d;
+    end
+endmodule
