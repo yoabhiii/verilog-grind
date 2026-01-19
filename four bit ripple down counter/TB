@@ -1,0 +1,26 @@
+module TB();
+reg clk_tb;
+reg reset_tb;
+wire [3:0]q_tb;
+wire [3:0]qq_tb;
+
+down_counter inst(.clk(clk_tb), .reset(reset_tb), .q(q_tb), .q_t(qq_tb));
+
+ initial begin
+    clk_tb = 0;
+    forever #5 clk_tb = ~clk_tb;
+    end
+    
+    initial begin
+    reset_tb = 1;
+    #20;
+    reset_tb = 0;
+    #200;
+    
+    $display("Simulation finished");
+    $finish;
+    end
+    initial begin 
+    $monitor("Time : %t | clk : %b | reset : %b | q : %b | ~q : %b", $time, clk_tb, reset_tb, q_tb, qq_tb); 
+    end
+endmodule
