@@ -1,0 +1,31 @@
+module ripple_upcounter(
+    input clk,
+    input reset,
+    output [3:0] q,
+    output [3:0] q_t
+    );
+    wire vcc =1'b1;
+    counter inst1 (.j_c(vcc), .k_c(vcc), .reset_c(reset), .clk_c(clk), .q_c(q[0]), .qt_c(q_t[0]));
+    counter inst2 (.j_c(vcc), .k_c(vcc), .reset_c(reset), .clk_c(q[0]), .q_c(q[1]), .qt_c(q_t[1]));
+    counter inst3 (.j_c(vcc), .k_c(vcc), .reset_c(reset), .clk_c(q[1]), .q_c(q[2]), .qt_c(q_t[2]));
+    counter inst4 (.j_c(vcc), .k_c(vcc), .reset_c(reset), .clk_c(q[2]), .q_c(q[3]), .qt_c(q_t[3]));
+    
+endmodule
+
+module counter( input j_c, input k_c, input clk_c, input reset_c, output reg q_c, output qt_c);
+assign qt_c = ~q_c;
+
+always@( negedge clk_c or posedge reset_c)
+ begin
+ if(reset_c)
+    q_c <= 1'b0;
+ else
+ case({j_c,k_c})
+ 2'b00 : q_c <= q_c;
+ 2'b01 : q_c <= 1'b0;
+ 2'b10 : q_c <= 1'b1;
+ 2'b11 : q_c <= ~q_c;
+ endcase
+
+end
+endmodule
