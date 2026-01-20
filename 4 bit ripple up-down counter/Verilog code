@@ -1,0 +1,22 @@
+module counter( input clk,rst,s,
+    output [3:0] q);
+    wire m0,m1,m2;
+    count inst1(.cc(clk), .rc(rst), .sc(s), .m(m0), .qc(q[0]));
+    count inst2(.cc(m0), .rc(rst), .sc(s), .m(m1), .qc(q[1]));
+    count inst3(.cc(m1), .rc(rst), .sc(s), .m(m2), .qc(q[2]));
+    count inst4(.cc(m2), .rc(rst), .sc(s), .m(), .qc(q[3]));
+    
+    endmodule
+    
+    
+module count( input cc, rc, sc,
+    output reg qc,
+    output m);
+    assign m = qc ^ sc;
+    always@(posedge rc or negedge cc)begin
+    if(rc)
+    qc <= 1'b0;
+    else 
+    qc <= ~qc;
+    end
+    endmodule
