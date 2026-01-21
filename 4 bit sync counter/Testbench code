@@ -12,7 +12,7 @@ repeat(32)
 $finish;
 end
 
-initial begin
-$monitor("Time : %t | clk : %b | O/p : %b",$time,clk_tb,q_tb);
+always@(negedge clk_tb)begin
+$display("Time : %t | clk : %b | O/p : %b",$time,clk_tb,q_tb);
 end
 endmodule
