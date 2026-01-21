@@ -1,0 +1,18 @@
+module TB();
+reg clk_tb;
+wire [3:0]q_tb;
+
+sync inst(.clk(clk_tb), .q(q_tb));
+
+initial begin
+$display("Simulation started");
+#5; clk_tb=0;
+repeat(32)
+#5 clk_tb = ~clk_tb;
+$finish;
+end
+
+initial begin
+$monitor("Time : %t | clk : %b | O/p : %b",$time,clk_tb,q_tb);
+end
+endmodule
