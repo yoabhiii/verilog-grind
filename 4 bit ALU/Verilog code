@@ -1,0 +1,33 @@
+module ALU(
+    input signed [3:0] A,
+    input [3:0] B,
+    input [2:0] sel,
+    input cin,
+    input borrow,
+    output zf,// zero flag output
+    output reg co, // carry output of Full adder
+    output reg [3:0] Y
+    );
+    assign zf = (Y == 4'b0); // used to tell if the operation done leads to an output being completely zero
+    always@(*) begin
+    co = 1'b0;
+    Y = 4'b0;
+    case(sel)
+    3'b000 : {co,Y} = A + B + cin; // Full adder
+    3'b001 : Y = A - B - {3'b0,borrow}; // Full subtractor
+    3'b010 : Y = A & B; // AND operation
+    3'b011 : Y = A | B; // OR operation
+    3'b100 : Y = A ^ B; // XOR operation
+    3'b101 : if( A > B) // 4 bit comparision
+             Y = {1'b0,A};
+             else if( A < B)
+             Y = {1'b0,B};
+             else
+             Y = 4'b1111;
+    3'b110 : Y = (B != 4'b0) ? (A/B) : 4'b0; // Divide operation
+    3'b111 : Y = A>>> 1; // Arithematic right shift
+    default : Y = 4'b0000;
+    endcase
+    end
+    
+endmodule
