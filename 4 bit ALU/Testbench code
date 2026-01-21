@@ -1,0 +1,77 @@
+module TB();
+reg [3:0] a_t,b_t;
+reg [2:0] sel_tb;
+wire [3:0] y_tb;
+wire co_tb;
+wire zf_tb;
+reg cin_tb;
+reg borrow_tb;
+
+ALU inst( .A(a_t), .B(b_t), .cin(cin_tb), .borrow(borrow_tb), .sel(sel_tb),.zf(zf_tb), .co(co_tb), .Y(y_tb));
+
+initial begin
+$display("Simulation started");
+a_t = 4'b0; b_t = 4'b0; sel_tb = 3'b0; cin_tb = 0; borrow_tb = 0;
+#10;
+//adder-
+$display("Adder");
+#5 a_t = 4'b0; b_t = 4'b1; cin_tb = 0;
+#5 a_t = 4'b1; b_t = 4'b0010; cin_tb = 1;
+#5 a_t = 4'b0100; b_t = 4'b1101; cin_tb = 1;
+#10;
+//subtractor-
+$display("Subtractor");
+sel_tb=3'b001;
+#5 a_t = 4'b0; b_t = 4'b1; borrow_tb = 0;
+#5 a_t = 4'b1; b_t = 4'b0010; borrow_tb= 1;
+#5 a_t = 4'b0100; b_t = 4'b1101; borrow_tb = 1;
+#10;
+//AND-
+$display("AND op");
+sel_tb=3'b010;
+#5 a_t = 4'b0; b_t = 4'b1;
+#5 a_t = 4'b1; b_t = 4'b0010;
+#5 a_t = 4'b0100; b_t = 4'b1101;
+#10;
+//OR-
+$display("OR op");
+sel_tb=3'b011;
+#5 a_t = 4'b0; b_t = 4'b1;
+#5 a_t = 4'b1; b_t = 4'b0010;
+#5 a_t = 4'b0100; b_t = 4'b1101;
+#10;
+//XOR-
+$display("XOR op");
+sel_tb=3'b100;
+#5 a_t = 4'b0; b_t = 4'b1;
+#5 a_t = 4'b1; b_t = 4'b0010;
+#5 a_t = 4'b0100; b_t = 4'b1101;
+#10;
+//Comparator-
+$display("Comparator");
+sel_tb=3'b101;
+#5 a_t = 4'b0100; b_t = 4'b1000;
+#5 a_t = 4'b1011; b_t = 4'b1011;
+#5 a_t = 4'b1110; b_t = 4'b1100;
+#10;
+//Divide-
+$display("Divide");
+sel_tb=3'b110;
+#5 a_t = 4'b0; b_t = 4'b1;
+#5 a_t = 4'b1; b_t = 4'b0;
+#5 a_t = 4'b1100; b_t = 4'b0010;
+#10;
+//arithematic shift right-
+$display("Arithematic shift right");
+sel_tb=3'b111;
+#5 a_t = 4'b0100;
+#5 a_t = 4'b1001;
+#5 a_t = 4'b0101;
+$finish;
+end
+
+initial begin
+
+$monitor ("Time : %t | a : %b | b : %b | sel : %b | Y : %b",$time,a_t,b_t,sel_tb,y_tb);
+
+end
