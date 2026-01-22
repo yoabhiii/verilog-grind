@@ -1,0 +1,14 @@
+module sync(
+input clk,
+input select,
+output reg [2:0] q = 3'b000
+    );
+    
+    always@(negedge clk) begin
+    q[0] <= ~q[0];
+    q[1] <= q[1]^ select ^ q[0];
+    q[2] <= q[2]^(( (~select)&q[0]&q[1]) | (select & (~q[0]) & (~q[1])));
+    
+
+    end
+endmodule
