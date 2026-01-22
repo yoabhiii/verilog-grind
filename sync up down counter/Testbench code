@@ -1,0 +1,25 @@
+module TB();
+reg clk_tb, select_tb;
+wire [2:0] q_tb;
+
+sync inst(.clk(clk_tb), .select(select_tb), .q(q_tb));
+
+initial begin
+$display("Simulation Started");
+clk_tb = 0; select_tb = 0; #5;
+$display("Up mode");
+repeat(14)begin
+clk_tb = ~clk_tb;
+#5;end
+select_tb =1;
+$display("Down mode");
+repeat(16)begin
+clk_tb = ~clk_tb;
+#5;end 
+$finish; 
+end
+
+always@(negedge clk_tb)begin
+$display("Time : %t | Select : %b | Q : %b | QC : %b",$time,select_tb,q_tb,(~q_tb)); 
+end
+endmodule
