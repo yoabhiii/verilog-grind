@@ -1,0 +1,30 @@
+module uni(
+            input [3:0]in, // for parallel input bit to mux, the msb and lsb of it is taken as the 1st input to the right and left shift operation
+            input clear, // triggers at zero
+            input clk, // positive triggered
+            input [1:0]sel, // mux select input
+            output reg [3:0]mux_output, // all four mux's output
+            output reg [3:0]register);
+            
+            always@(*)begin
+            case(sel)
+            
+            2'b00 : mux_output = register; // previous output
+                 
+            2'b01 : mux_output = {in[3],register[3:1]}; // right shift              
+            
+            2'b10 : mux_output = {register[2:0],in[0]}; // left shift            
+            
+            2'b11 : mux_output = in;              
+                     
+            endcase
+            end
+            
+            
+            always@(posedge clk)begin
+            if(!clear)
+            register <= 4'b0000;
+            else
+            register <= mux_output; 
+            end
+endmodule
