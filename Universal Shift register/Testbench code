@@ -1,0 +1,54 @@
+module TB();
+    reg [3:0]in_tb;
+    reg clk_tb;
+    reg clear_tb;
+    reg [1:0]sel_tb;
+    wire [3:0] mux_output_tb;
+    wire [3:0] register_tb;
+    
+    uni inst (.in(in_tb),
+              .clk(clk_tb), 
+              .clear(clear_tb),
+              .sel(sel_tb),
+              .mux_output(mux_output_tb),
+              .register(register_tb));
+              
+    initial clk_tb = 1'b0;
+    always #5 clk_tb = ~clk_tb;
+              
+    initial begin
+    //setting the register to zero- 
+    $display("Setting register to zero");
+    clear_tb = 1'b0;
+    sel_tb=2'b11;
+    in_tb = 4'b1101;
+    #10;
+    
+    //select line to 01 to choose serial in (shift right)-
+    $display("Shift right");
+    clear_tb = 1'b1;
+    sel_tb = 2'b01;
+    #30;
+    
+     //select line to 10 to choose serial in (left shift)-
+     $display("Shift left");
+     sel_tb = 2'b10;
+     #30;
+     
+     //select line to 11 to  choose parallel input-
+     $display("Parallel input");
+     sel_tb = 2'b11;
+     #10;
+     
+    //select line to 00 to hold the previous data-
+    $display("Previous data through sel 00");
+     sel_tb = 2'b00;
+     #20;
+     
+     $finish;
+    end
+    
+    initial begin 
+    $monitor("Time : %t | Clk : %b | Clear : %b | in : %b | sel : %b | mux : %b | register : %b", $time, clk_tb, clear_tb, in_tb, sel_tb, mux_output_tb, register_tb); 
+    end
+endmodule
